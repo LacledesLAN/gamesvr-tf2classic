@@ -49,22 +49,22 @@ RUN useradd --home /app --gid root --system TF2Classic &&`
     mkdir -p /app/ll-tests &&`
     chown TF2Classic:root -R /app;
 
+# `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
 COPY --chown=TF2Classic:root --from=tf2classic-builder /output/srcds2013 /app
-
+RUN true
 COPY --chown=TF2Classic:root --from=tf2classic-builder /output/tf2classic /app/tf2classic
+RUN true
+COPY --from=tf2classic-builder ./dist/linux/ll-tests /app/ll-tests
 
 # Fix bad so names
-RUN ln -s /app/bin/vphysics_srv.so /app/bin/vphysics.so &&`
+RUN chmod +x /app/ll-tests/*.sh &&`
+    ln -s /app/bin/vphysics_srv.so /app/bin/vphysics.so &&`
     ln -s /app/bin/studiorender_srv.so /app/bin/studiorender.so &&`
     ln -s /app/bin/soundemittersystem_srv.so /app/bin/soundemittersystem.so &&`
     ln -s /app/bin/shaderapiempty_srv.so /app/bin/shaderapiempty.so &&`
     ln -s /app/bin/scenefilecache_srv.so /app/bin/scenefilecache.so &&`
     ln -s /app/bin/replay_srv.so /app/bin/replay.so &&`
     ln -s /app/bin/materialsystem_srv.so /app/bin/materialsystem.so;
-
-#COPY --chown=TF2Classic:root ./ll-tests /app/ll-tests
-
-#RUN chmod +x /app/ll-tests/*.sh
 
 USER TF2Classic
 

@@ -54,7 +54,7 @@ COPY --chown=TF2Classic:root --from=tf2classic-builder /output/srcds2013 /app
 RUN true
 COPY --chown=TF2Classic:root --from=tf2classic-builder /output/tf2classic /app/tf2classic
 RUN true
-COPY --from=tf2classic-builder ./dist/linux/ll-tests /app/ll-tests
+COPY --chown=TF2Classic:root ./dist/linux/ll-tests /app/ll-tests
 
 # Fix bad so names
 RUN chmod +x /app/ll-tests/*.sh &&`

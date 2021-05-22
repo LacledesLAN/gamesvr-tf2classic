@@ -6,9 +6,9 @@ ARG contentServer=content.lacledeslan.net
 # Download TF2 Classic server files
 RUN echo "Downloading TF2 Classic from LL public ftp server" &&`
         mkdir --parents /tmp/ &&`
-        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.1.7z" -o /tmp/TF2Classic.7z &&`
+        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.2.7z" -o /tmp/TF2Classic.7z &&`
     echo "Validating download against known hash" &&`
-        echo "7e57eec3ce04402fe8a49056a55dd7e3392141bfbbfd5d636d007480a4636ace  /tmp/TF2Classic.7z" | sha256sum -c - &&`
+        echo "173986B945645D286B3FA7670F630823EF80C8DCFAD067E633BEA5CB8E510332  /tmp/TF2Classic.7z" | sha256sum -c - &&`
     echo "Extracting TF2 Classic files" &&`
         7z x -o/output/ /tmp/TF2Classic.7z &&`
         rm -f /tmp/*.7z

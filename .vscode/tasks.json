@@ -15,7 +15,7 @@
             "label": "Build & Execute Self Tests",
             "type": "shell",
             "command": "docker run -it --rm lltest/gamesvr-tf2classic ./ll-tests/gamesvr-tf2classic.sh;",
-            "dependsOn": "build-image",
+            "dependsOn": "Build",
             "group": {
                 "kind": "build",
                 "isDefault": true

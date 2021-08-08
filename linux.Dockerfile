@@ -4,19 +4,19 @@ FROM lacledeslan/steamcmd:linux as tf2classic-builder
 ARG contentServer=content.lacledeslan.net
 
 # Download TF2 Classic server files
-RUN echo "Downloading TF2 Classic from LL public ftp server" &&`
+RUN echo "Downloading" &&`
         mkdir --parents /tmp/ &&`
-        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.2.7z" -o /tmp/TF2Classic.7z &&`
+        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.3_linux_full.zip" -o /tmp/tf2classic.zip &&`
     echo "Validating download against known hash" &&`
-        echo "173986B945645D286B3FA7670F630823EF80C8DCFAD067E633BEA5CB8E510332  /tmp/TF2Classic.7z" | sha256sum -c - &&`
-    echo "Extracting TF2 Classic files" &&`
-        7z x -o/output/ /tmp/TF2Classic.7z &&`
-        rm -f /tmp/*.7z
+        echo "773ec9e51144208a1800771395d88304ef1acfd14460c305269f477bd5c80cd7  /tmp/tf2classic.zip" | sha256sum -c - &&`
+    echo "Extracting" &&`
+        7z x -o/output/ /tmp/tf2classic.zip &&`
+        rm -f /tmp/tf2classic.zip;
 
 # Download Source SDK Base 2013 Dedicated Server
 RUN /app/steamcmd.sh +login anonymous +force_install_dir /output/srcds2013 +app_update 244310 validate +quit;
 
-# TODO: Wire up and use the community updater
+# TODO: ?Wire up the community updater?
 
 #=======================================================================
 FROM debian:buster-slim

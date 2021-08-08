@@ -68,6 +68,10 @@ RUN chmod +x /app/ll-tests/*.sh &&`
 
 USER TF2Classic
 
+RUN echo $'\n\nLinking steamclient.so to prevent srcds_run errors' &&`
+        mkdir --parents /app/.steam/sdk32 &&`
+        ln -s /app/bin/steamclient.so /app/.steam/sdk32/steamclient.so;
+
 WORKDIR /app
 
 CMD ["/bin/bash"]

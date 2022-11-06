@@ -8,7 +8,7 @@ This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its c
 
 ## Linux
 
-```
+```shell
 docker pull lacledeslan/gamesvr-tf2;
 ```
 

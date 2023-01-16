@@ -6,17 +6,15 @@ ARG contentServer=content.lacledeslan.net
 # Download TF2 Classic server files
 RUN echo "Downloading" &&`
         mkdir --parents /tmp/ &&`
-        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.3_linux_full.zip" -o /tmp/tf2classic.zip &&`
+        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.4_full.zip" -o /tmp/tf2classic.zip &&`
     echo "Validating download against known hash" &&`
-        echo "773ec9e51144208a1800771395d88304ef1acfd14460c305269f477bd5c80cd7  /tmp/tf2classic.zip" | sha256sum -c - &&`
+        echo "42ce386b703cd3c4a4463ab88a825b1397339244b5ed34a1ae850e8c651664a7  /tmp/tf2classic.zip" | sha256sum -c - &&`
     echo "Extracting" &&`
         7z x -o/output/ /tmp/tf2classic.zip &&`
         rm -f /tmp/tf2classic.zip;
 
 # Download Source SDK Base 2013 Dedicated Server
 RUN /app/steamcmd.sh +login anonymous +force_install_dir /output/srcds2013 +app_update 244310 validate +quit;
-
-# TODO: ?Wire up the community updater?
 
 #=======================================================================
 FROM debian:bullseye-slim
@@ -52,8 +50,14 @@ RUN useradd --home /app --gid root --system TF2Classic &&`
 # `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
 COPY --chown=TF2Classic:root --from=tf2classic-builder /output/srcds2013 /app
 RUN true
+
 COPY --chown=TF2Classic:root --from=tf2classic-builder /output/tf2classic /app/tf2classic
-RUN true
+RUN echo "forcibly link server_srv.so" &&`
+    rm -rf /app/tf2classic//bin/server_srv.so &&`
+    ln -s /app/tf2classic/bin/server.so /app/tf2classic/bin/server_srv.so &&`
+    echo "Delete 'libstdc++.so.6' provided by Source SDK 2013 so that the newer system-provided lib is used" &&`
+    rm -rf /app/bin/libstdc++.so.6;
+
 COPY --chown=TF2Classic:root ./dist/linux/ll-tests /app/ll-tests
 
 # Fix bad so names

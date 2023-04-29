@@ -6,9 +6,9 @@ ARG contentServer=content.lacledeslan.net
 # Download TF2 Classic server files
 RUN echo "Downloading" &&`
         mkdir --parents /tmp/ &&`
-        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2.0.4_full.zip" -o /tmp/tf2classic.zip &&`
+        curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2023.04.29.zip" -o /tmp/tf2classic.zip &&`
     echo "Validating download against known hash" &&`
-        echo "42ce386b703cd3c4a4463ab88a825b1397339244b5ed34a1ae850e8c651664a7  /tmp/tf2classic.zip" | sha256sum -c - &&`
+        echo "06a521007f667aae73c1c03b5f96ae520160f5874591e2f159937d1837df6b5b  /tmp/tf2classic.zip" | sha256sum -c - &&`
     echo "Extracting" &&`
         7z x -o/output/ /tmp/tf2classic.zip &&`
         rm -f /tmp/tf2classic.zip;

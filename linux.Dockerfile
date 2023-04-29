@@ -3,8 +3,12 @@ FROM lacledeslan/steamcmd:linux as tf2classic-builder
 
 ARG contentServer=content.lacledeslan.net
 
-# Download TF2 Classic server files
-RUN echo "Downloading" &&`
+# Install dependencies for TF2CDownloaderLinux
+RUN apt update &&`
+        apt install libxcb-xinerama0 -y
+
+# Download TF2 Classic server files from content server
+RUN echo "Downloading Server Files From Content Server" &&`
         mkdir --parents /tmp/ &&`
         curl -sSL "http://${contentServer}/fastDownloads/_installers/tf2classic-2023.04.29.zip" -o /tmp/tf2classic.zip &&`
     echo "Validating download against known hash" &&`
@@ -15,6 +19,12 @@ RUN echo "Downloading" &&`
 
 # Download Source SDK Base 2013 Dedicated Server
 RUN /app/steamcmd.sh +login anonymous +force_install_dir /output/srcds2013 +app_update 244310 validate +quit;
+
+RUN echo "Run community self-updater" &&`
+    mkdir --parents /updater &&`
+    wget "https://github.com/tf2classic/TF2CDownloader/releases/latest/download/TF2CDownloaderLinux" -P /updater &&`
+    chmod +x /updater/TF2CDownloaderLinux &&`
+    /updater/TF2CDownloaderLinux --update /output/;
 
 #=======================================================================
 FROM debian:bullseye-slim
